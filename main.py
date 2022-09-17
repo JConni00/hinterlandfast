@@ -18,6 +18,8 @@ nltk.download('averaged_perceptron_tagger')
 import spacy
 from spacy.matcher import PhraseMatcher
 
+import en_core_web_lg
+
 os.system('python -m spacy download en_core_web_lg')
 
 # init params of skill extractor
@@ -58,7 +60,7 @@ def get_skills(job_description):
     # init params of skill extractor
     # nlp = spacy.load("en_core_web_lg")
     # init skill extractor
-    nlp = spacy.load("en_core_web_lg")
+    nlp = en_core_web_lg.load()
 
     skill_extractor = SkillExtractor(nlp, SKILL_DB, PhraseMatcher)
 
