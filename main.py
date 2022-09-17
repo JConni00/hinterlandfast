@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 
 import io
+import os
 from urllib.request import Request, urlopen
 from PyPDF2 import PdfFileReader
 # pdf mining
@@ -39,20 +40,36 @@ def pdfparser(target_url="https://pexam-storage.b-cdn.net/hinterland/skill-based
         interpreter.process_page(page)
         data = retstr.getvalue()
 
-    print("TEXT")
-    print(data)
-    sentences = nltk.sent_tokenize(data) #tokenize sentences
-    print(sentences)
-    nouns = [] #empty to array to hold all nouns
+    return data
 
-    for sentence in sentences:
-        for word,pos in nltk.pos_tag(nltk.word_tokenize(str(sentence))):
-            if (pos == 'NN' or pos == 'NNP' or pos == 'NNS' or pos == 'NNPS'):
-                if len(word) > 1:
-                    nouns.append(word)
+def get_skills(job_description):
+    # imports
+    import spacy
+    from spacy.matcher import PhraseMatcher
 
-    return nouns
+    os.exec('python -m spacy download en_core_web_sm')
+    # init params of skill extractor
+    nlp = spacy.load("en_core_web_lg")
 
+    # load default skills data base
+    from skillNer.general_params import SKILL_DB
+    # import skill extractor
+    from skillNer.skill_extractor_class import SkillExtractor
+
+    # init params of skill extractor
+    # nlp = spacy.load("en_core_web_lg")
+    # init skill extractor
+    skill_extractor = SkillExtractor(nlp, SKILL_DB, PhraseMatcher)
+
+    # extract skills from job_description
+    # job_description = """
+    # You are a Python developer with a solid experience in web development
+    # and can manage projects. You quickly adapt to new environments
+    # and speak fluently English and French
+    # """
+
+    annotations = skill_extractor.annotate(job_description)
+    return annotations
 
 app = FastAPI()
 
@@ -62,9 +79,13 @@ class Msg(BaseModel):
 class Url(BaseModel):
     url: str
 
-@app.get("/pdf/{inp}")
-async def root(inp: Url):
-    return pdfparser(inp.url)
+@app.get("/pdf/{url}")
+async def root(url: str):
+    txt = pdfparser(url)
+
+
+
+    return pdfparser(url)
 
 
 @app.get("/path")
