@@ -20,7 +20,7 @@ from spacy.matcher import PhraseMatcher
 
 import en_core_web_lg
 
-os.system('python -m spacy download en_core_web_lg')
+# os.system('python -m spacy download en_core_web_lg')
 
 # init params of skill extractor
 
