@@ -48,7 +48,8 @@ def pdfparser(target_url="https://pexam-storage.b-cdn.net/hinterland/skill-based
     for sentence in sentences:
         for word,pos in nltk.pos_tag(nltk.word_tokenize(str(sentence))):
             if (pos == 'NN' or pos == 'NNP' or pos == 'NNS' or pos == 'NNPS'):
-               nouns.append(word)
+                if len(word) > 1:
+                    nouns.append(word)
 
     return nouns
 
