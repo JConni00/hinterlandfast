@@ -15,6 +15,18 @@ import io
 import nltk
 nltk.download('punkt')
 nltk.download('averaged_perceptron_tagger')
+# imports
+import spacy
+from spacy.matcher import PhraseMatcher
+
+os.exec('python -m spacy download en_core_web_sm')
+# init params of skill extractor
+nlp = spacy.load("en_core_web_lg")
+
+# load default skills data base
+from skillNer.general_params import SKILL_DB
+# import skill extractor
+from skillNer.skill_extractor_class import SkillExtractor
 
 def pdfparser(target_url="https://pexam-storage.b-cdn.net/hinterland/skill-based-cv.pdf"):
     data = ''
@@ -43,18 +55,6 @@ def pdfparser(target_url="https://pexam-storage.b-cdn.net/hinterland/skill-based
     return data
 
 def get_skills(job_description):
-    # imports
-    import spacy
-    from spacy.matcher import PhraseMatcher
-
-    os.exec('python -m spacy download en_core_web_sm')
-    # init params of skill extractor
-    nlp = spacy.load("en_core_web_lg")
-
-    # load default skills data base
-    from skillNer.general_params import SKILL_DB
-    # import skill extractor
-    from skillNer.skill_extractor_class import SkillExtractor
 
     # init params of skill extractor
     # nlp = spacy.load("en_core_web_lg")
@@ -82,10 +82,9 @@ class Url(BaseModel):
 @app.get("/pdf/{url}")
 async def root(url: str):
     txt = pdfparser(url)
+    annotations = get_skills(txt)
 
-
-
-    return pdfparser(url)
+    return annotations
 
 
 @app.get("/path")
