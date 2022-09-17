@@ -59,15 +59,17 @@ app = FastAPI()
 class Msg(BaseModel):
     msg: str
 
+class Url(BaseModel):
+    url: str
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World. Welcome to FastAPI!"}
+@app.get("/url")
+async def root(inp: Url):
+    return pdfparser(inp.url)
 
 
 @app.get("/path")
 async def demo_get():
-    return pdfparser()
+    return {"message": "Hello World. Welcome to FastAPI!"}
 
 
 @app.post("/path")
