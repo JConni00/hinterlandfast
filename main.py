@@ -62,7 +62,7 @@ class Msg(BaseModel):
 class Url(BaseModel):
     url: str
 
-@app.get("/url")
+@app.get("/pdf")
 async def root(inp: Url):
     return pdfparser(inp.url)
 
