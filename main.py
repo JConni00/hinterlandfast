@@ -18,6 +18,8 @@ nltk.download('averaged_perceptron_tagger')
 import spacy
 from spacy.matcher import PhraseMatcher
 
+os.system('python -m spacy download en_core_web_lg')
+
 # init params of skill extractor
 
 # load default skills data base

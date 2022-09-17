@@ -19,4 +19,3 @@ requests
 nltk
 PyPDF2
 spacy
-en-core-web-lg
