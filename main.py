@@ -11,7 +11,6 @@ from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
 from pdfminer.pdfpage import PDFPage
 from pdfminer.converter import XMLConverter, HTMLConverter, TextConverter
 from pdfminer.layout import LAParams
-import io
 import nltk
 nltk.download('punkt')
 nltk.download('averaged_perceptron_tagger')
@@ -19,7 +18,7 @@ nltk.download('averaged_perceptron_tagger')
 import spacy
 from spacy.matcher import PhraseMatcher
 
-os.exec('python -m spacy download en_core_web_sm')
+os.system('python -m spacy download en_core_web_sm')
 # init params of skill extractor
 nlp = spacy.load("en_core_web_lg")
 
